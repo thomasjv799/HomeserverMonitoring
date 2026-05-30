@@ -1,6 +1,8 @@
 // Discover all running Docker containers via the Docker socket.
+// Short refresh so newly started containers are picked up quickly.
 discovery.docker "containers" {
-  host = "unix:///var/run/docker.sock"
+  host             = "unix:///var/run/docker.sock"
+  refresh_interval = "5s"
 }
 
 // Turn the Docker container name (/foo) into a clean `container` label.

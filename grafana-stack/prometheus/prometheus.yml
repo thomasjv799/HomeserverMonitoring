@@ -16,7 +16,9 @@ scrape_configs:
       - targets: ["cadvisor:8080"]
 
   # Docker daemon metrics (enabled on the host via /etc/docker/daemon.json).
-  # Reached over the docker bridge gateway from inside this compose network.
+  # Reached over the docker bridge gateway (host.docker.internal). The daemon's
+  # metrics-addr MUST bind a non-loopback address (e.g. 0.0.0.0:9323), or this
+  # target stays DOWN — see README step 1.
   - job_name: docker
     static_configs:
       - targets: ["host.docker.internal:9323"]

@@ -7,6 +7,6 @@ contactPoints:
       - uid: telegram-1
         type: telegram
         settings:
-          bottoken: $__env{TG_BOT_TOKEN}
-          chatid: "$__env{TG_CHAT_ID}"
+          bottoken: ${TG_BOT_TOKEN}
+          chatid: "${TG_CHAT_ID}"
         disableResolveMessage: false
