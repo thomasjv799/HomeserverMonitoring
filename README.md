@@ -56,8 +56,9 @@ If `sensors` prints temperatures, Netdata will pick them up automatically.
 ```bash
 cp .env.example .env
 ```
-Edit `.env` and set `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` to the values above.
-`.env` is git-ignored and never committed.
+Edit `.env` and set `TG_BOT_TOKEN` and `TG_CHAT_ID` to the values above.
+`.env` is git-ignored and never committed. (The names are intentionally `TG_*`,
+not `TELEGRAM_*`, to avoid colliding with Netdata's internal config variables.)
 
 ---
 
