@@ -1,0 +1,61 @@
+apiVersion: 1
+
+groups:
+  - orgId: 1
+    name: homeserver
+    folder: Alerts
+    interval: 1m
+    rules:
+      - uid: log-error-spike
+        title: Log error spike
+        condition: C
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: High rate of error/panic/fatal log lines across containers
+        noDataState: OK
+        execErrState: OK
+        data:
+          - refId: A
+            relativeTimeRange: { from: 300, to: 0 }
+            datasourceUid: loki
+            model:
+              refId: A
+              expr: 'sum(count_over_time({container=~".+"} |~ "(?i)(error|panic|fatal)" [5m]))'
+              queryType: instant
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              refId: C
+              type: threshold
+              expression: A
+              conditions:
+                - evaluator: { type: gt, params: [20] }
+
+      - uid: container-crash-loop
+        title: Container crash-looping
+        condition: C
+        for: 0m
+        labels:
+          severity: critical
+        annotations:
+          summary: A container has restarted many times in the last 10 minutes
+        noDataState: OK
+        execErrState: OK
+        data:
+          - refId: A
+            relativeTimeRange: { from: 600, to: 0 }
+            datasourceUid: prometheus
+            model:
+              refId: A
+              expr: 'increase(engine_daemon_container_actions_seconds_count{action="start"}[10m])'
+              instant: true
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              refId: C
+              type: threshold
+              expression: A
+              conditions:
+                - evaluator: { type: gt, params: [3] }

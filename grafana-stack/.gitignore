@@ -1,0 +1,7 @@
+# Secrets and runtime data (also covered by root .gitignore)
+.env
+data/
+
+# Community dashboards are fetched by fetch-dashboards.sh, not committed
+grafana/provisioning/dashboards/json/node-exporter-full.json
+grafana/provisioning/dashboards/json/cadvisor.json
