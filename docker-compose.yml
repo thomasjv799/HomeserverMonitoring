@@ -1,0 +1,39 @@
+services:
+  netdata:
+    image: netdata/netdata:stable
+    container_name: netdata
+    hostname: homeserver
+    restart: unless-stopped
+    pid: host
+    network_mode: host
+    cap_add:
+      - SYS_PTRACE
+      - SYS_ADMIN
+    security_opt:
+      - apparmor:unconfined
+    env_file:
+      - .env
+    volumes:
+      - ./netdata:/etc/netdata
+      - netdatalib:/var/lib/netdata
+      - netdatacache:/var/cache/netdata
+      - /:/host/root:ro,rslave
+      - /etc/passwd:/host/etc/passwd:ro
+      - /etc/group:/host/etc/group:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /etc/os-release:/host/etc/os-release:ro
+      - /var/log:/host/var/log:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  speedtest-exporter:
+    image: ghcr.io/miguelndecarvalho/speedtest-exporter:latest
+    container_name: speedtest-exporter
+    restart: unless-stopped
+    ports:
+      - "9798:9798"
+
+volumes:
+  netdatalib:
+  netdatacache:
