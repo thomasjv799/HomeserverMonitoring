@@ -1,10 +1,10 @@
 {
   "uid": "docker-overview",
-  "title": "Docker Overview",
-  "tags": ["docker"],
+  "title": "Docker & CPU Overview",
+  "tags": ["docker", "system"],
   "timezone": "browser",
   "schemaVersion": 39,
-  "version": 1,
+  "version": 2,
   "time": { "from": "now-6h", "to": "now" },
   "panels": [
     {
@@ -53,11 +53,41 @@
       ]
     },
     {
+      "id": 6,
+      "type": "timeseries",
+      "title": "CPU temperature (coretemp)",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 9, "w": 24, "x": 0, "y": 6 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "celsius",
+          "custom": { "drawStyle": "line", "fillOpacity": 10 },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "orange", "value": 85 },
+              { "color": "red", "value": 98 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "node_hwmon_temp_celsius{chip=\"platform_coretemp_0\"}",
+          "legendFormat": "{{sensor}}"
+        }
+      ]
+    },
+    {
       "id": 4,
       "type": "timeseries",
       "title": "Container states over time",
       "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "gridPos": { "h": 9, "w": 24, "x": 0, "y": 6 },
+      "gridPos": { "h": 9, "w": 24, "x": 0, "y": 15 },
       "targets": [
         {
           "refId": "A",
@@ -72,7 +102,7 @@
       "type": "table",
       "title": "Per-container uptime (low = recently (re)started)",
       "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 15 },
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 24 },
       "options": { "showHeader": true },
       "targets": [
         {
