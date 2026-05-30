@@ -7,6 +7,11 @@ contactPoints:
       - uid: telegram-1
         type: telegram
         settings:
-          bottoken: ${TG_BOT_TOKEN}
-          chatid: "${TG_CHAT_ID}"
+          # Token (the actual secret) stays in .env via env interpolation.
+          bottoken: "${TG_BOT_TOKEN}"
+          # chatid MUST be a literal quoted string: Grafana coerces an
+          # env-interpolated numeric value to a JSON number and then fails to
+          # unmarshal it into this string field (crash-loops on startup).
+          # A Telegram chat ID is not a secret on its own — safe to commit.
+          chatid: "813187457"
         disableResolveMessage: false
