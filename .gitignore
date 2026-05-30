@@ -1,3 +1,6 @@
+# Secrets — never commit
 .env
-data/
+
+# Local runtime / editor noise
 *.local
+data/
