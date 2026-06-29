@@ -1,5 +1,13 @@
 apiVersion: 1
 
+# Grafana provisioning only creates/updates rules — removing a rule from this
+# file does NOT delete it from Grafana's database. The log-error-spike rule
+# must be deleted explicitly by UID (its broad regex caused constant
+# false-positive alerts to Discord/Telegram).
+deleteRules:
+  - orgId: 1
+    uid: log-error-spike
+
 groups:
   - orgId: 1
     name: homeserver
